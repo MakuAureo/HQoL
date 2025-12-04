@@ -1,0 +1,91 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>OreoM.HQoL</AssemblyName>
+        <Product>HQoL</Product>
+        <Version>1.0.8</Version>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <RootNamespace>HQoL</RootNamespace>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <RestoreAdditionalProjectSources>
+            https://api.nuget.org/v3/index.json;
+            https://nuget.bepinex.dev/v3/index.json
+        </RestoreAdditionalProjectSources>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>embedded</DebugType>
+        <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <LCVersion>73</LCVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);LC_VERSION_$(LCVersion)</DefineConstants>
+    </PropertyGroup>
+
+    <!-- Conditional properties -->
+    <PropertyGroup Condition="'$(LCVersion)' == '73'">
+        <AssemblyName>$(AssemblyName).73</AssemblyName>
+        <Product>$(Product)</Product>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(LCVersion)' == '72'">
+        <AssemblyName>$(AssemblyName).72</AssemblyName>
+        <Product>$(Product)_backport</Product>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
+        <PackageReference Include="BepInEx.Core" Version="5.*" PrivateAssets="all"/>
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" PrivateAssets="all"/>
+        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" PrivateAssets="all"/>
+    </ItemGroup>
+
+    <!-- v73+ dependencies -->
+    <ItemGroup Condition="'$(LCVersion)' == '73'">
+        <PackageReference Include="UnityEngine.Modules" Version="2022.3.62" IncludeAssets="compile" PrivateAssets="all" />
+        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="73.0.0-ngd.0" PrivateAssets="all" />
+    </ItemGroup>
+
+    <!-- v40/v72 dependencies -->
+    <ItemGroup Condition="'$(LCVersion)' == '72'">
+        <PackageReference Include="UnityEngine.Modules" Version="2022.3.9" IncludeAssets="compile" PrivateAssets="all" />
+        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="70.0.0-ngd.0" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="Unity.Netcode.Runtime" Publicize="true">
+            <HintPath>../LcAssemblies/Unity.Netcode.Runtime.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <!-- NetcodePatch v73+ -->
+    <Target Name="NetcodePatchV73" Condition="'$(LCVersion)' == '73'" AfterTargets="PostBuildEvent">
+      <Message Text="Running NetcodePatch for v73+" Importance="high" />
+      <Exec Command="netcode-patch -uv 2022.3.62 -nv 1.12.0 -tv 1.0.0 &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')" />
+    </Target>
+
+    <!-- NetcodePatch v40/v72 -->
+    <Target Name="NetcodePatchV72" Condition="'$(LCVersion)' == '72'" AfterTargets="PostBuildEvent">
+      <Message Text="Running NetcodePatch for v40/v72" Importance="high" />
+      <Exec Command="netcode-patch -uv 2022.3.9 -nv 1.5.2 -tv 1.0.0 &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')" />
+    </Target>
+</Project>
