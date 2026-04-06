@@ -1,5 +1,6 @@
-using System.Reflection;
 using HarmonyLib;
+using System.Reflection;
+using UnityEngine;
 
 namespace HQoL.Patches;
 
@@ -12,6 +13,8 @@ internal class ItemDropshipPatches
 
     private static int preOrderedVehicle = -1;
     private static int preOrderedItemCount = 0;
+
+    private static DepositItemsDesk? deskReference;
 
     [HarmonyPatch(nameof(ItemDropship.Start))]
     [HarmonyPostfix]
@@ -26,7 +29,9 @@ internal class ItemDropshipPatches
 
         __instance.shipAnimator.speed = 1f;
 
-        if (StartOfRound.Instance.currentLevelID != 3)
+        deskReference = Object.FindObjectOfType<DepositItemsDesk>();
+
+        if (StartOfRound.Instance.currentLevel.spawnEnemiesAndScrap || deskReference == null)
             return;
 
         __instance.playersFirstOrder = false;
@@ -36,7 +41,7 @@ internal class ItemDropshipPatches
     [HarmonyPrefix]
     private static void PreLandShipClientRpc(ItemDropship __instance)
     {
-        if (StartOfRound.Instance.currentLevelID != 3)
+        if (StartOfRound.Instance.currentLevel.spawnEnemiesAndScrap || deskReference == null)
             return;
 
         __instance.shipAnimator.speed = 5f;
@@ -46,7 +51,7 @@ internal class ItemDropshipPatches
     [HarmonyPostfix]
     private static void PostOpenShipDoorsOnServer(ItemDropship __instance)
     {
-        if (StartOfRound.Instance.currentLevelID != 3)
+        if (StartOfRound.Instance.currentLevel.spawnEnemiesAndScrap || deskReference == null)
             return;
 
         __instance.ShipLeaveClientRpc();
@@ -56,7 +61,7 @@ internal class ItemDropshipPatches
     [HarmonyPostfix]
     private static void PostUpdate(ItemDropship __instance)
     {
-        if (StartOfRound.Instance.currentLevelID != 3)
+        if (StartOfRound.Instance.currentLevel.spawnEnemiesAndScrap || deskReference == null)
             return;
 
         int orderVehicle = -1;
@@ -98,7 +103,7 @@ internal class ItemDropshipLandVehiclePatch
 
     private static void Prefix(ItemDropship __instance)
     {
-        if (StartOfRound.Instance.currentLevelID != 3)
+        if (StartOfRound.Instance.currentLevel.spawnEnemiesAndScrap || Object.FindObjectOfType<DepositItemsDesk>() == null)
             return;
 
         __instance.shipAnimator.speed = 1f;
