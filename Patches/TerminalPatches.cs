@@ -523,7 +523,7 @@ internal static class TerminalHelper
 
     public static string FindItemsToDeposit()
     {
-        if (!StartOfRound.Instance.inShipPhase && StartOfRound.Instance.currentLevelID != 3)
+        if (!StartOfRound.Instance.inShipPhase && StartOfRound.Instance.currentLevel.spawnEnemiesAndScrap && Object.FindObjectOfType<DepositItemsDesk>() == null)
         {
             isDepositValid = false;
             return "Can only deposit items while the ship is in orbit or at company.\n\n";
