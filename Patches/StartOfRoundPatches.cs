@@ -143,6 +143,11 @@ public static class StartOfRoundHelper
 
     public static void MoveItemsToSpecialStartPosition(StartOfRound instance, int currItemID, ref Vector3 currItemPosition)
     {
+        if (HQoL.modConfig.sortLoot == false)
+        {
+            return;
+        } 
+        
         if (currItemID == jetpackID)
         {
             currItemPosition.x = 5f;
