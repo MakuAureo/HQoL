@@ -137,6 +137,7 @@ public static class StartOfRoundHelper
 {
     var itemName = instance.allItemsList.itemsList[currItemID].name;
     
+    public static void MoveItemsToSpecialStartPosition(StartOfRound instance, int currItemID, ref Vector3 currItemPosition)
     {
         if (HQoL.modConfig.sortLoot == false)
         {
