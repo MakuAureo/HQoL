@@ -74,8 +74,11 @@ internal class StartOfRoundPatches
                     (HQoL.grabObjDeactivatedInfo != null && (bool)HQoL.grabObjDeactivatedInfo.GetValue(scrapObj)) ||
                     !scrapObj.itemProperties.isScrap ||
                     scrapObj.itemProperties.name == "GiftBox" ||
+                    scrapObj.transform.parent.gameObject.GetComponent<AutoParentToShip>() != null ||
                     HQoL.modConfig.storageException.Contains(scrapObj.itemProperties.name.ToLower()) || //internal scrap name
-                    HQoL.modConfig.storageException.Contains(scrapObj.gameObject.GetComponentInChildren<ScanNodeProperties>().headerText.ToLower())); //scan name
+                    HQoL.modConfig.storageException.Contains(scrapObj.gameObject.GetComponentInChildren<ScanNodeProperties>().headerText.ToLower()) || //scan name
+                    HQoL.modConfig.storageDenial.Contains(scrapObj.itemProperties.name.ToLower()) || //internal scrap name
+                    HQoL.modConfig.storageDenial.Contains(scrapObj.gameObject.GetComponentInChildren<ScanNodeProperties>().headerText.ToLower())); //scan name
             Network.HQoLNetwork.Instance.AddItems(allScrap.ToArray());
             allScrap.ForEach(scrapObj => scrapObj.NetworkObject.Despawn());
             addedScrapThisDay = true;
@@ -135,15 +138,15 @@ internal class StartOfRoundPatches
 
 public static class StartOfRoundHelper
 {
-    var itemName = instance.allItemsList.itemsList[currItemID].name;
-    
     public static void MoveItemsToSpecialStartPosition(StartOfRound instance, int currItemID, ref Vector3 currItemPosition)
     {
         if (HQoL.modConfig.sortLoot == false)
         {
             return;
-        } 
-        
+        }
+
+        string itemName = instance.allItemsList.itemsList[currItemID].name;
+
         if (itemName == "Jetpack")
         {
             currItemPosition.x = 5f;
@@ -183,7 +186,7 @@ public static class StartOfRoundHelper
             currItemPosition.z = -13f;
             return;
         }
-        
+
         if (itemName == "ProFlashlight")
         {
             currItemPosition.x = -1f;
@@ -191,7 +194,7 @@ public static class StartOfRoundHelper
             currItemPosition.z = -13f;
             return;
         }
-        
+
         if (itemName == "Flashlight")
         {
             currItemPosition.x = -1f;

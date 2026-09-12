@@ -10,6 +10,10 @@ public class HQoLConfig
 {
     public HashSet<string> storageException;
     public readonly ConfigEntry<string> storageExceptionConfig;
+
+    public HashSet<string> storageDenial;
+    public readonly ConfigEntry<string> storageDenialConfig;
+
     public bool sortLoot;
     public readonly ConfigEntry<bool> sortLootConfig;
 
@@ -19,9 +23,16 @@ public class HQoLConfig
         
         storageExceptionConfig = cfg.Bind(
                 "General",
-                "Dont store list",
+                "Dont auto store list",
                 "Shotgun, Knife",
                 "What items should not be stored automatically"
+                );
+
+        storageDenialConfig = cfg.Bind(
+                "General",
+                "Never store list",
+                "",
+                "What items should never be stored even when manually deposited"
                 );
 
         sortLootConfig = cfg.Bind<bool>(
@@ -37,6 +48,7 @@ public class HQoLConfig
         cfg.SaveOnConfigSet = true; 
 
         storageException = new(storageExceptionConfig.Value.Split(new char[] {','}, System.StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim().ToLower()));
+        storageDenial = new(storageDenialConfig.Value.Split(new char[] {','}, System.StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim().ToLower()));
         sortLoot = sortLootConfig.Value;
     }
 
