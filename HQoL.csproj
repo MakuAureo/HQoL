@@ -2,7 +2,7 @@
     <PropertyGroup>
         <AssemblyName>OreoM.HQoL</AssemblyName>
         <Product>HQoL</Product>
-        <Version>1.0.15</Version>
+        <Version>1.0.16</Version>
     </PropertyGroup>
 
     <PropertyGroup>

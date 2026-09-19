@@ -106,6 +106,11 @@ internal class StartOfRoundPatches
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> TranspileLoadShipGrabbableItems(IEnumerable<CodeInstruction> codes)
     {
+        if (HQoL.modConfig.sortLoot == false)
+        {
+            return codes;
+        }
+
         CodeInstruction[] callMoveItemsToSpecialStartPosition =
         {
             new CodeInstruction(OpCodes.Ldarg_0),
