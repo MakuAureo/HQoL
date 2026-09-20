@@ -160,6 +160,31 @@ public static class StartOfRoundHelper
             return;
         }
 
+        if (itemName == "RadarBooster")
+        {
+            currItemPosition.x = 5f;
+            currItemPosition.y = instance.playerSpawnPositions[1].position.y + 0.5f;
+            currItemPosition.z = -13f;
+            return;
+        }
+
+        if (itemName == "Boombox")
+        {
+            currItemPosition.x = 4f;
+            currItemPosition.y = instance.playerSpawnPositions[1].position.y + 0.5f;
+            currItemPosition.z = -13f;
+            return;
+        }
+
+        if (itemName == "ExtensionLadder")
+        {
+            currItemPosition.x = 3f;
+            currItemPosition.y = instance.playerSpawnPositions[1].position.y + 0.5f;
+            currItemPosition.z = -13f;
+            return;
+        }
+
+
         if (itemName == "Key")
         {
             currItemPosition.x = -4f;
@@ -173,6 +198,22 @@ public static class StartOfRoundHelper
             currItemPosition.x = 3.5f;
             currItemPosition.y = instance.playerSpawnPositions[1].position.y + 0.5f;
             currItemPosition.z = -14.5f;
+            return;
+        }
+
+        if (itemName == "LockPicker")
+        {
+            currItemPosition.x = 3.5f;
+            currItemPosition.y = instance.playerSpawnPositions[1].position.y + 0.5f;
+            currItemPosition.z = -15f;
+            return;
+        }
+
+        if (itemName == "GunAmmo")
+        {
+            currItemPosition.x = 1.3f;
+            currItemPosition.y = instance.playerSpawnPositions[1].position.y + 0.5f;
+            currItemPosition.z = -13f;
             return;
         }
 
@@ -194,15 +235,39 @@ public static class StartOfRoundHelper
 
         if (itemName == "ProFlashlight")
         {
-            currItemPosition.x = -1f;
+            currItemPosition.x = -1.5f;
             currItemPosition.y = instance.playerSpawnPositions[1].position.y + 0.5f;
-            currItemPosition.z = -13f;
+            currItemPosition.z = -12.8f;
             return;
         }
 
         if (itemName == "Flashlight")
         {
-            currItemPosition.x = -1f;
+            currItemPosition.x = -1.5f;
+            currItemPosition.y = instance.playerSpawnPositions[1].position.y + 0.5f;
+            currItemPosition.z = -13.3f;
+            return;
+        }
+
+        if (itemName == "StunGrenade")
+        {
+            currItemPosition.x = -2.2f;
+            currItemPosition.y = instance.playerSpawnPositions[1].position.y + 0.5f;
+            currItemPosition.z = -13f;
+            return;
+        }
+
+        if (itemName == "WalkieTalkie")
+        {
+            currItemPosition.x = -2.6f;
+            currItemPosition.y = instance.playerSpawnPositions[1].position.y + 0.5f;
+            currItemPosition.z = -13f;
+            return;
+        }
+
+        if (itemName == "TZPInhalant")
+        {
+            currItemPosition.x = -3.2f;
             currItemPosition.y = instance.playerSpawnPositions[1].position.y + 0.5f;
             currItemPosition.z = -13f;
             return;
