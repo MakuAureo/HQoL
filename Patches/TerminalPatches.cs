@@ -543,7 +543,7 @@ internal static class TerminalHelper
             Dictionary<string, int> deposit = new();
             foreach (GrabbableObject item in allItems)
             {
-                if (!item.itemProperties.isScrap)
+                if (!item.itemProperties.isScrap || item.scrapValue <= 0)
                     continue;
 
                 if (deposit.ContainsKey(item.gameObject.GetComponentInChildren<ScanNodeProperties>().headerText))
@@ -574,7 +574,7 @@ internal static class TerminalHelper
         HashSet<string> allDepositdScrapNames = new();
         foreach (GrabbableObject item in allItems)
         {
-            if (!item.itemProperties.isScrap || item.itemProperties.name == "GiftBox" || (HQoL.grabObjDeactivatedInfo != null && (bool)HQoL.grabObjDeactivatedInfo.GetValue(item)))
+            if (!item.itemProperties.isScrap || item.scrapValue <= 0 || item.itemProperties.name == "GiftBox" || (HQoL.grabObjDeactivatedInfo != null && (bool)HQoL.grabObjDeactivatedInfo.GetValue(item)))
                 continue;
 
             string allScrapNames = item.itemProperties.name + '#' + item.gameObject.GetComponentInChildren<ScanNodeProperties>().headerText;
